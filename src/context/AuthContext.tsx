@@ -25,6 +25,7 @@ const AuthContextProvider: FC = (props: PropTypes) => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
+      setIsLoading(false);
     });
 
     return unsubscribe;

@@ -1,12 +1,17 @@
-export const SET_TITLE: string = "SET_TITLE";
+import { Workout, WorkoutsState } from "../reducers/workoutsReducer";
 
-export type Action = { type: string; payload: {} };
+export const UPDATE_WORKOUTS: string = "UPDATE_WORKOUTS";
 
-const updateWorkoutTitle = (title: string): Action => {
+export type Action = {
+  type: typeof UPDATE_WORKOUTS;
+  payload: { workouts: Workout[] };
+};
+
+export const updateWorkouts = (workouts: Workout[]): Action => {
   return {
-    type: SET_TITLE,
+    type: UPDATE_WORKOUTS,
     payload: {
-      title: title,
+      workouts: workouts,
     },
   };
 };
