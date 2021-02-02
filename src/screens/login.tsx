@@ -1,8 +1,8 @@
 import React, { FC, useContext, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { TextInputField } from "../components";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { AuthContext } from "../context/AuthContext";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 type AuthStackParamList = {
   Login: undefined;
@@ -42,6 +42,7 @@ const App: FC<Props> = (props) => {
       <TextInputField
         placeholder="Email"
         onChangeText={(text) => setEmail(text)}
+        keyboardType={"email-address"}
       />
       <TextInputField
         placeholder="Password"

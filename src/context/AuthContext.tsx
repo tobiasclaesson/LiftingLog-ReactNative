@@ -32,10 +32,8 @@ const AuthContextProvider: FC = (props: PropTypes) => {
   });
 
   const signIn = async (email: string, password: string) => {
-    console.log("calling log in ");
     try {
       await auth.signInWithEmailAndPassword(email, password);
-      console.log("logIn ");
     } catch (error) {
       console.log("error: ", error);
     }
@@ -52,7 +50,6 @@ const AuthContextProvider: FC = (props: PropTypes) => {
   const signUp = async (email: string, password: string) => {
     try {
       await auth.createUserWithEmailAndPassword(email, password);
-      alert("Authing up baby");
     } catch (e) {
       console.log(e);
     }

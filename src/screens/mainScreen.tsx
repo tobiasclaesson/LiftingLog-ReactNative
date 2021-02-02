@@ -7,10 +7,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { Workout } from "../reducers/workoutsReducer";
 import { ReducerState } from "../reducers";
 import { WorkoutsListItem, AddWorkoutRoutineButton } from "../components";
-
 import { DBContext } from "../context/DBContext";
+import { AppStackParamList } from "../navigation/appstack";
+import { StackNavigationProp } from "@react-navigation/stack";
 
-const MainScreen: FC = () => {
+type ProfileScreenNavigationProp = StackNavigationProp<
+  AppStackParamList,
+  "MainScreen"
+>;
+
+type Props = {
+  navigation: ProfileScreenNavigationProp;
+};
+
+const MainScreen: FC<Props> = (props) => {
+  const { navigation } = props;
   const { signOut } = useContext(AuthContext);
   const { saveWorkoutRoutine } = useContext(DBContext);
   const { workouts } = useSelector(
@@ -22,12 +33,8 @@ const MainScreen: FC = () => {
   const [workoutRoutines, setWorkoutRoutines] = useState<Workout[]>([]);
 
   useEffect(() => {
-    //const subscriber = firebase
-  }, []);
-
-  useEffect(() => {
     setWorkoutRoutines(workouts);
-  });
+  }, [workouts]);
 
   return (
     <View style={styles.container}>
@@ -38,7 +45,7 @@ const MainScreen: FC = () => {
           <WorkoutsListItem
             workout={item}
             onPress={() => {
-              saveWorkoutRoutine(item);
+              console.log("clicking workout");
             }}
           />
         )}
@@ -53,7 +60,9 @@ const MainScreen: FC = () => {
           ></View>
         )}
       />
-      <AddWorkoutRoutineButton />
+      <AddWorkoutRoutineButton
+        onPress={() => navigation.navigate("CreateWorkoutRoutineScreen")}
+      />
       <Button title="Log out" onPress={() => signOut()} />
     </View>
   );

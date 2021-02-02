@@ -4,7 +4,7 @@ import { SignUpScreen, LoginScreen } from "../screens";
 import * as colors from "../utils/colors";
 import { color } from "react-native-reanimated";
 
-type AuthStackParamList = {
+export type AuthStackParamList = {
   Login: undefined;
   Signup: undefined;
 };

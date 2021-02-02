@@ -1,22 +1,25 @@
 import React, { FC } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { color } from "react-native-reanimated";
 import { Workout } from "../reducers/workoutsReducer";
 import * as colors from "../utils/colors";
 
 interface Props {
-  workout: Workout;
-  onPress: () => void;
+  name: string;
+  onPress: (name: string) => void;
 }
 
-const WorkoutsListItem: FC<Props> = (props) => {
-  const { workout, onPress } = props;
+const ExercisesListItem: FC<Props> = (props) => {
+  const { name, onPress } = props;
 
   return (
-    <TouchableOpacity onPress={() => onPress()}>
+    <TouchableOpacity
+      onPress={() => {
+        onPress(name);
+      }}
+    >
       <View style={styles.container}>
-        <Text style={styles.title}>{workout.title}</Text>
+        <Text style={styles.title}>{name}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -24,18 +27,16 @@ const WorkoutsListItem: FC<Props> = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "90%",
+    width: "100%",
     backgroundColor: colors.primaryDark,
     alignSelf: "center",
-    borderRadius: 3,
   },
   title: {
-    padding: 20,
-    paddingBottom: 50,
+    padding: 25,
     color: "#fff",
     fontFamily: "Verdana",
     fontSize: 18,
   },
 });
 
-export default WorkoutsListItem;
+export default ExercisesListItem;

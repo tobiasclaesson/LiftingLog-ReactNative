@@ -8,12 +8,20 @@ export interface WorkoutsState {
 
 export interface Workout {
   title: string;
+  exercises: Exercise[];
+  key: string;
+}
+
+export interface Exercise {
+  name: string;
+  set: number;
+  reps: number[];
+  weight: number[];
 }
 
 const initialState: WorkoutsState = {
-  workouts: [{ title: "initial state" }],
+  workouts: [],
 };
-//const initialState: WorkoutsState = [];
 
 type Action = {
   type: string;

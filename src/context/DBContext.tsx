@@ -1,6 +1,9 @@
 import React, { createContext, useState, useEffect, FC } from "react";
 import { auth, db } from "../firebase/firebase";
 import { Workout } from "../reducers/workoutsReducer";
+import { useDispatch } from "react-redux";
+import * as Actions from "../actions";
+import { AddExerciseScreen } from "../screens";
 //import firebase from "firebase";
 
 type PropTypes = {
@@ -9,7 +12,9 @@ type PropTypes = {
 
 const initialState = {
   isLoading: true,
-  saveWorkoutRoutine: (workout: Workout) => {},
+  saveWorkoutRoutine: (workout: Workout, closure?: () => void) => {},
+  getExercisesFromDB: () => {},
+  exercises: [""],
 };
 
 export const DBContext = createContext(initialState);
@@ -17,19 +22,76 @@ export const DBContext = createContext(initialState);
 const DBContextProvider: FC = (props: PropTypes) => {
   const { children } = props;
 
+  const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = useState(true);
+  const [exercises, setExercises] = useState<string[]>([]);
 
-  useEffect(() => {});
+  useEffect(() => {
+    if (auth.currentUser) {
+      const routinesSubscriber = db
+        .collection("users")
+        .doc(auth.currentUser!.uid)
+        .collection("workoutRoutines")
+        .onSnapshot((querySnapshot) => {
+          const workoutRoutines: Workout[] = [];
+          querySnapshot.forEach((documentSnapshot) => {
+            workoutRoutines.push({
+              title: documentSnapshot.data().title,
+              exercises: [],
+              key: documentSnapshot.id,
+            });
+          });
+          dispatch(Actions.updateWorkouts(workoutRoutines));
+          setIsLoading(false);
+        });
 
-  const saveWorkoutRoutine = (workout: Workout) => {
-    db.collection("users")
+      return () => routinesSubscriber();
+    }
+
+    const exercisesSubscriber = db
+      .collection("Exercises")
+      .onSnapshot((querySnapshot) => {
+        const temp: string[] = [];
+        querySnapshot.forEach((documentSnapshot) => {
+          temp.push(documentSnapshot.data().name);
+        });
+
+        setExercises(temp);
+      });
+
+    return () => exercisesSubscriber();
+  });
+
+  const saveWorkoutRoutine = async (workout: Workout, closure?: () => void) => {
+    await db
+      .collection("users")
       .doc(auth.currentUser!.uid)
       .collection("workoutRoutines")
       .add(workout);
+
+    if (closure) {
+      closure();
+    }
+  };
+
+  const getExercisesFromDB = async () => {
+    let exercises: string[] = [];
+    let snapshot = await db.collection("Exercises").get();
+
+    if (snapshot) {
+      snapshot.forEach((doc) => {
+        exercises.push(doc.data().name);
+      });
+    }
+
+    setExercises(exercises);
   };
 
   return (
-    <DBContext.Provider value={{ isLoading, saveWorkoutRoutine }}>
+    <DBContext.Provider
+      value={{ isLoading, saveWorkoutRoutine, getExercisesFromDB, exercises }}
+    >
       {children}
     </DBContext.Provider>
   );

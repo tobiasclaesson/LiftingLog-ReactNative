@@ -5,10 +5,11 @@ interface Props {
   placeholder: string;
   onChangeText: (text: string) => void;
   secureTextEntry?: boolean;
+  keyboardType?: "email-address";
 }
 
 const TextInputField: FC<Props> = (props) => {
-  const { placeholder, onChangeText, secureTextEntry } = props;
+  const { placeholder, onChangeText, secureTextEntry, keyboardType } = props;
 
   return (
     <View style={styles.container}>
@@ -17,6 +18,7 @@ const TextInputField: FC<Props> = (props) => {
         placeholder={placeholder}
         onChangeText={(text) => onChangeText(text)}
         secureTextEntry={secureTextEntry || false}
+        keyboardType={keyboardType || "default"}
       />
     </View>
   );

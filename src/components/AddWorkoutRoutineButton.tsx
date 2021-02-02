@@ -2,17 +2,18 @@ import React, { FC } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Workout } from "../reducers/workoutsReducer";
+import { TextInputField } from "../components";
 import * as colors from "../utils/colors";
 
-interface Props {}
+interface Props {
+  onPress: () => void;
+}
 
 const AddWorkoutRoutineButton: FC<Props> = (props) => {
-  const {} = props;
+  const { onPress } = props;
 
   return (
-    <TouchableOpacity
-      onPress={() => console.log("navigating to addRoutineScreen")}
-    >
+    <TouchableOpacity onPress={() => onPress()}>
       <View style={styles.container}>
         <Text style={styles.title}>Add Workout Routine</Text>
       </View>
