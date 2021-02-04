@@ -1,31 +1,38 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Button, FlatList } from "react-native";
-import { AuthContext } from "../context/AuthContext";
+import {
+  View,
+  StyleSheet,
+  Button,
+  FlatList,
+  Text,
+  ActivityIndicator,
+} from "react-native";
+import { DBContext } from "../context/DBContext";
 import colors from "../utils/colors";
-import * as actions from "../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Workout } from "../redux/reducers/workoutsReducer";
 import { ReducerState } from "../redux/reducers";
 import { WorkoutsListItem, AddWorkoutRoutineButton } from "../components";
-import { DBContext } from "../context/DBContext";
 import { AppStackParamList } from "../navigation/appstack";
 import { StackNavigationProp } from "@react-navigation/stack";
+import * as Actions from "../redux/actions";
 
-type ProfileScreenNavigationProp = StackNavigationProp<
+type MainScreenNavigationProp = StackNavigationProp<
   AppStackParamList,
   "MainScreen"
 >;
 
 type Props = {
-  navigation: ProfileScreenNavigationProp;
+  navigation: MainScreenNavigationProp;
 };
 
 const MainScreen: FC<Props> = (props) => {
   const { navigation } = props;
-  const { signOut } = useContext(AuthContext);
+  const { workoutIsLoading, getWorkoutsFromDB } = useContext(DBContext);
   const { workouts } = useSelector(
     (state: ReducerState) => state.workoutsReducer
   );
+  const dispatch = useDispatch();
 
   const [workoutRoutines, setWorkoutRoutines] = useState<Workout[]>([]);
 
@@ -33,38 +40,63 @@ const MainScreen: FC<Props> = (props) => {
     setWorkoutRoutines(workouts);
   }, [workouts]);
 
+  useEffect(() => {
+    getWorkoutsFromDB().then((value) => {
+      dispatch(Actions.updateWorkouts(value));
+    });
+  }, []);
+
+  const EmptyListComponent = () => {
+    return (
+      <View style={styles.EmptyListComponentContainer}>
+        <Text style={styles.text}>Workout routine List is empty</Text>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <FlatList
-        style={styles.workoutsList}
-        data={workoutRoutines}
-        renderItem={({ item, index }) => (
-          <WorkoutsListItem
-            workout={item}
-            onPress={() => {
-              navigation.navigate("ActiveWorkoutScreen", {
-                title: item.title,
-                workoutIndex: index,
-              });
-            }}
+      {!workoutIsLoading ? (
+        <>
+          <FlatList
+            style={styles.workoutsList}
+            data={workoutRoutines}
+            renderItem={({ item, index }) => (
+              <WorkoutsListItem
+                workout={item}
+                onPress={() => {
+                  navigation.navigate("ActiveWorkoutScreen", {
+                    title: item.title,
+                    workoutIndex: index,
+                  });
+                }}
+              />
+            )}
+            keyExtractor={(item) => item.key}
+            ItemSeparatorComponent={() => (
+              <View
+                style={{
+                  height: 15,
+                  width: "100%",
+                  backgroundColor: colors.primary,
+                }}
+              ></View>
+            )}
+            ListEmptyComponent={() => EmptyListComponent()}
           />
-        )}
-        keyExtractor={(item) => item.key}
-        ItemSeparatorComponent={() => (
-          <View
-            style={{
-              height: 15,
-              width: "100%",
-              backgroundColor: colors.primary,
-            }}
-          ></View>
-        )}
-      />
-      <View style={styles.addButtonContainer}>
-        <AddWorkoutRoutineButton
-          onPress={() => navigation.navigate("CreateWorkoutRoutineScreen")}
-        />
-      </View>
+          <View style={styles.addButtonContainer}>
+            <AddWorkoutRoutineButton
+              onPress={() => navigation.navigate("CreateWorkoutRoutineScreen")}
+            />
+          </View>
+        </>
+      ) : (
+        <View
+          style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
+        >
+          <ActivityIndicator size="large" />
+        </View>
+      )}
     </View>
   );
 };
@@ -82,6 +114,18 @@ const styles = StyleSheet.create({
   },
   addButtonContainer: {
     width: "100%",
+  },
+  EmptyListComponentContainer: {
+    backgroundColor: colors.primaryDark,
+    alignItems: "center",
+    alignSelf: "center",
+    width: "90%",
+    paddingVertical: 30,
+  },
+  text: {
+    color: colors.white,
+    fontFamily: "Verdana",
+    fontSize: 18,
   },
 });
 

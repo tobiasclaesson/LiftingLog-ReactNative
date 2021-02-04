@@ -5,12 +5,15 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import colors from "../utils/colors";
 import { DrawerContentComponentProps } from "@react-navigation/drawer";
+import { useDispatch } from "react-redux";
+import * as Actions from "../redux/actions";
 
 interface Props {}
 
 const DrawerContent: FC<DrawerContentComponentProps> = (props) => {
   const { navigation } = props;
   const { signOut } = useContext(AuthContext);
+  const dispatch = useDispatch();
 
   const button = (
     title: string,
@@ -32,7 +35,7 @@ const DrawerContent: FC<DrawerContentComponentProps> = (props) => {
         containerStyle={
           !isSignOutButton
             ? { width: "100%" }
-            : { width: "100%", bottom: 20, position: "absolute" }
+            : { width: "100%", bottom: 60, position: "absolute" }
         }
       >
         <Text style={styles.buttonText}>{title}</Text>
@@ -52,6 +55,15 @@ const DrawerContent: FC<DrawerContentComponentProps> = (props) => {
         "Log Out",
         () => {
           signOut();
+          dispatch(
+            Actions.updateWorkouts([
+              {
+                title: "",
+                exercises: [{ name: "", sets: [{ reps: 0, weight: 0 }] }],
+                key: "",
+              },
+            ])
+          );
           navigation.closeDrawer();
         },
         true

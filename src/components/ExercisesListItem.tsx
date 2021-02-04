@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primaryDark,
     alignSelf: "center",
   },
+
   title: {
     padding: 25,
     color: "#fff",

@@ -53,18 +53,28 @@ const CreateWorkoutRoutineScreen: FC<Props> = (props) => {
 
   return (
     <View style={styles.container}>
-      <TextInputField placeholder={"Title"} onChangeText={(e) => setTitle(e)} />
-      <ExercisesFlatlist exercises={exercises} />
-      <View style={styles.buttonContainer}>
-        {button("Add Exercise", () =>
-          navigation.navigate("AddExerciseScreen", { exercises })
-        )}
-        {button("Save Routine", () => {
-          let routine = { title: title, exercises: exercises, key: "" };
-          dispatch(Actions.updateExercises([]));
-          saveWorkoutRoutine(routine, () => navigation.goBack());
-        })}
-      </View>
+      <ExercisesFlatlist
+        exercises={exercises}
+        flatlistHeader={
+          <TextInputField
+            placeholder={"Title"}
+            onChangeText={(e) => setTitle(e)}
+            shouldAutoFocus={true}
+          />
+        }
+        flatlistFooter={
+          <View style={styles.buttonContainer}>
+            {button("Add Exercise", () =>
+              navigation.navigate("AddExerciseScreen", { exercises })
+            )}
+            {button("Save Routine", () => {
+              let routine = { title: title, exercises: exercises, key: "" };
+              dispatch(Actions.updateExercises([]));
+              saveWorkoutRoutine(routine, () => navigation.goBack());
+            })}
+          </View>
+        }
+      />
     </View>
   );
 };
@@ -82,8 +92,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     paddingTop: 20,
-
+    marginBottom: 30,
     width: "90%",
+    alignSelf: "center",
   },
   button: {
     backgroundColor: colors.primaryDark,

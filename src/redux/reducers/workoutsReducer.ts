@@ -9,6 +9,7 @@ export interface Workout {
   title: string;
   exercises: Exercise[];
   key: string;
+  finishedDate?: Date;
 }
 
 export interface Exercise {

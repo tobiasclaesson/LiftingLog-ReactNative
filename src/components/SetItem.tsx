@@ -11,15 +11,18 @@ import { ReducerState } from "../redux/reducers";
 import { Set } from "../redux/reducers/workoutsReducer";
 import colors from "../utils/colors";
 import * as Actions from "../redux/actions";
+import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import { color } from "react-native-reanimated";
 
 interface Props {
   set: Set;
   setIndex: number;
   exerciseIndex: number;
+  forFinishedWorkout?: boolean;
 }
 
 const SetItem: FC<Props> = (props) => {
-  const { set, setIndex, exerciseIndex } = props;
+  const { set, setIndex, exerciseIndex, forFinishedWorkout } = props;
   const { exercises } = useSelector(
     (state: ReducerState) => state.exercisesReducer
   );
@@ -45,29 +48,77 @@ const SetItem: FC<Props> = (props) => {
       <View style={styles.setContainer}>
         <Text style={styles.text}>{setIndex + 1}</Text>
       </View>
-      <View style={styles.repsContainer}>
-        <TextInput
-          style={styles.textInput}
-          keyboardType={"numeric"}
-          onChangeText={(text) => updateReps(text)}
-        >
-          {set.reps}
-        </TextInput>
+
+      {!forFinishedWorkout ? (
+        <View style={styles.repsContainer}>
+          <TextInput
+            style={styles.textInput}
+            keyboardType={"numeric"}
+            onChangeText={(text) => updateReps(text)}
+            autoCompleteType="off"
+            autoCorrect={false}
+            selectTextOnFocus={true}
+          >
+            {set.reps}
+          </TextInput>
+        </View>
+      ) : (
+        <View style={styles.repsContainer}>
+          <Text style={styles.textInput}>{set.reps}</Text>
+        </View>
+      )}
+
+      {!forFinishedWorkout ? (
+        <View style={styles.weightContainer}>
+          <TextInput
+            style={styles.textInput}
+            keyboardType={"numeric"}
+            onChangeText={(text) => updateWeight(text)}
+            autoCompleteType="off"
+            autoCorrect={false}
+            selectTextOnFocus={true}
+          >
+            {set.weight}
+          </TextInput>
+        </View>
+      ) : (
+        <View style={styles.weightContainer}>
+          <Text style={styles.textInput}>{set.weight}</Text>
+        </View>
+      )}
+
+      <View style={styles.iconContainer}>
+        {!forFinishedWorkout ? (
+          <TouchableOpacity
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={() => removeSet()}
+          >
+            <MaterialCommunityIcon
+              name="delete-forever"
+              size={30}
+              color={colors.red}
+              style={{ alignSelf: "center" }}
+            />
+          </TouchableOpacity>
+        ) : (
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <MaterialCommunityIcon
+              name="delete-forever"
+              size={30}
+              color={colors.red}
+              style={{ display: "none" }}
+            />
+          </View>
+        )}
       </View>
-      <View style={styles.weightContainer}>
-        <TextInput
-          style={styles.textInput}
-          keyboardType={"numeric"}
-          onChangeText={(text) => updateWeight(text)}
-        >
-          {set.weight}
-        </TextInput>
-      </View>
-      <TouchableOpacity onPress={() => removeSet()}>
-        <Text style={{ ...styles.text, color: colors.red, fontWeight: "bold" }}>
-          X
-        </Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -82,17 +133,25 @@ const styles = StyleSheet.create({
   setContainer: {
     justifyContent: "center",
     alignItems: "center",
+
+    flex: 1,
   },
   repsContainer: {
-    backgroundColor: colors.primary,
     justifyContent: "center",
     alignItems: "center",
+    flex: 2,
   },
   weightContainer: {
-    backgroundColor: colors.primary,
     justifyContent: "center",
     alignItems: "center",
+    flex: 2,
   },
+  iconContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+  },
+
   text: {
     color: colors.white,
     fontFamily: "Verdana",
@@ -106,6 +165,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingVertical: 10,
     paddingHorizontal: 15,
+    backgroundColor: colors.primary,
   },
 });
 

@@ -11,11 +11,36 @@ type PropTypes = {
 };
 
 const initialState = {
-  isLoading: true,
+  exercisesIsLoading: true,
+  historyIsLoading: true,
+  workoutIsLoading: true,
+  finishedWorkoutss: [
+    {
+      title: "",
+      exercises: [{ name: "", sets: [{ reps: 0, weight: 0 }] }],
+      key: "",
+    },
+  ],
   saveWorkoutRoutine: (workout: Workout, closure?: () => void) => {},
-  getExercisesFromDB: () => {},
-  exercises: [""],
   saveFinishedWorkout: (workout: Workout, closure?: () => void) => {},
+  removeWorkoutRoutine: (id: string, closure?: () => void) => {},
+  getExercisesFromDB: () => Promise.all([""]),
+  getHistoryFromDB: () =>
+    Promise.all([
+      {
+        title: "",
+        exercises: [{ name: "", sets: [{ reps: 0, weight: 0 }] }],
+        key: "",
+      },
+    ]),
+  getWorkoutsFromDB: () =>
+    Promise.all([
+      {
+        title: "",
+        exercises: [{ name: "", sets: [{ reps: 0, weight: 0 }] }],
+        key: "",
+      },
+    ]),
 };
 
 export const DBContext = createContext(initialState);
@@ -25,8 +50,11 @@ const DBContextProvider: FC = (props: PropTypes) => {
 
   const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [exercises, setExercises] = useState<string[]>([]);
+  const [exercisesIsLoading, setExercisesIsLoading] = useState(true);
+  const [historyIsLoading, setHistoryIsLoading] = useState(true);
+  const [workoutIsLoading, setWorkoutIsLoading] = useState(true);
+
+  const [finishedWorkoutss, setfinishedWorkoutss] = useState<Workout[]>([]);
 
   useEffect(() => {
     if (auth.currentUser) {
@@ -44,24 +72,43 @@ const DBContextProvider: FC = (props: PropTypes) => {
             });
           });
           dispatch(Actions.updateWorkouts(workoutRoutines));
-          setIsLoading(false);
         });
 
       return () => routinesSubscriber();
     }
 
-    const exercisesSubscriber = db
-      .collection("Exercises")
-      .onSnapshot((querySnapshot) => {
-        const temp: string[] = [];
-        querySnapshot.forEach((documentSnapshot) => {
-          temp.push(documentSnapshot.data().name);
+    if (auth.currentUser) {
+      const historySubscriber = db
+        .collection("users")
+        .doc(auth.currentUser!.uid)
+        .collection("finishedWorkouts")
+        .onSnapshot((querySnapshot) => {
+          const workouts: Workout[] = [];
+          querySnapshot.forEach((documentSnapshot) => {
+            workouts.push({
+              title: documentSnapshot.data().title,
+              exercises: documentSnapshot.data().exercises,
+              key: documentSnapshot.id,
+              finishedDate: documentSnapshot.data().finishedDate,
+            });
+          });
+          setfinishedWorkoutss(workouts);
         });
 
-        setExercises(temp);
-      });
+      return () => historySubscriber();
+    }
+    // const exercisesSubscriber = db
+    //   .collection("Exercises")
+    //   .onSnapshot((querySnapshot) => {
+    //     const temp: string[] = [];
+    //     querySnapshot.forEach((documentSnapshot) => {
+    //       temp.push(documentSnapshot.data().name);
+    //     });
 
-    return () => exercisesSubscriber();
+    //     setExercises(temp);
+    //   });
+
+    // return () => exercisesSubscriber();
   });
 
   const saveWorkoutRoutine = async (workout: Workout, closure?: () => void) => {
@@ -76,17 +123,88 @@ const DBContextProvider: FC = (props: PropTypes) => {
     }
   };
 
-  const getExercisesFromDB = async () => {
-    let exercises: string[] = [];
+  const removeWorkoutRoutine = async (id: string, closure?: () => void) => {
+    await db
+      .collection("users")
+      .doc(auth.currentUser!.uid)
+      .collection("workoutRoutines")
+      .doc(id)
+      .delete();
+
+    if (closure) {
+      closure();
+    }
+  };
+
+  // const getExercisesFromDB = async () => {
+  //   let exercises: string[] = [];
+  //   let snapshot = await db.collection("Exercises").get();
+
+  //   if (snapshot) {
+  //     snapshot.forEach((doc) => {
+  //       exercises.push(doc.data().name);
+  //     });
+  //   }
+
+  //   setExercises(exercises);
+  // };
+
+  const getExercisesFromDB = async (): Promise<string[]> => {
     let snapshot = await db.collection("Exercises").get();
+
+    let exercises: string[] = [];
 
     if (snapshot) {
       snapshot.forEach((doc) => {
         exercises.push(doc.data().name);
       });
     }
+    setExercisesIsLoading(false);
+    return Promise.all(exercises);
+  };
 
-    setExercises(exercises);
+  const getWorkoutsFromDB = async (): Promise<Workout[]> => {
+    let snapshot = await db
+      .collection("users")
+      .doc(auth.currentUser!.uid)
+      .collection("workoutRoutines")
+      .get();
+
+    let workouts: Workout[] = [];
+
+    if (snapshot) {
+      snapshot.forEach((doc) => {
+        workouts.push({
+          title: doc.data().title,
+          exercises: doc.data().exercises,
+          key: doc.id,
+        });
+      });
+    }
+    setWorkoutIsLoading(false);
+    return Promise.all(workouts);
+  };
+
+  const getHistoryFromDB = async (): Promise<Workout[]> => {
+    let snapshot = await db
+      .collection("users")
+      .doc(auth.currentUser!.uid)
+      .collection("finishedWorkouts")
+      .get();
+
+    let finishedWorkouts: Workout[] = [];
+
+    if (snapshot) {
+      snapshot.forEach((doc) => {
+        finishedWorkouts.push({
+          title: doc.data().title,
+          exercises: doc.data().exercises,
+          key: doc.data().key,
+        });
+      });
+    }
+    setHistoryIsLoading(false);
+    return Promise.all(finishedWorkouts);
   };
 
   const saveFinishedWorkout = async (
@@ -107,11 +225,16 @@ const DBContextProvider: FC = (props: PropTypes) => {
   return (
     <DBContext.Provider
       value={{
-        isLoading,
+        exercisesIsLoading,
+        historyIsLoading,
+        workoutIsLoading,
         saveWorkoutRoutine,
-        getExercisesFromDB,
-        exercises,
         saveFinishedWorkout,
+        removeWorkoutRoutine,
+        getExercisesFromDB,
+        getHistoryFromDB,
+        getWorkoutsFromDB,
+        finishedWorkoutss,
       }}
     >
       {children}

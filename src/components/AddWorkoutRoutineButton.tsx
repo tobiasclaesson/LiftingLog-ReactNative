@@ -4,6 +4,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Workout } from "../redux/reducers/workoutsReducer";
 import { TextInputField } from "../components";
 import colors from "../utils/colors";
+import { color } from "react-native-reanimated";
 
 interface Props {
   onPress: () => void;
@@ -30,6 +31,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 20,
     width: "90%",
+    borderColor: colors.primaryLight,
+    borderWidth: 2,
   },
   title: {
     padding: 20,

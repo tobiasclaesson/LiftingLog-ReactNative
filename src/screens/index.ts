@@ -6,6 +6,7 @@ import CreateWorkoutRoutineScreen from "./CreateWorkoutRoutineScreen";
 import AddExerciseScreen from "./AddExerciseScreen";
 import ActiveWorkoutScreen from "./ActiveWorkoutScreen";
 import HistoryScreen from "./HistoryScreen";
+import FinishedWorkoutScreen from "./FinishedWorkoutScreen";
 
 export {
   SignUpScreen,
@@ -16,4 +17,5 @@ export {
   AddExerciseScreen,
   ActiveWorkoutScreen,
   HistoryScreen,
+  FinishedWorkoutScreen,
 };

@@ -4,7 +4,7 @@ const colors = {
   primaryLight: "#4fb3bf",
   white: "#fff",
   black: "black",
-  red: "#ff0000",
+  red: "#ff4d4d",
 };
 
 export default colors;

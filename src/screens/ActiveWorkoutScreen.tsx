@@ -38,8 +38,10 @@ const ActiveWorkoutScreen: FC<Props> = (props) => {
   }, []);
 
   const finishWorkout = () => {
-    saveFinishedWorkout({ ...workout, exercises: exercises }, () =>
-      navigation.goBack()
+    let date = new Date();
+    saveFinishedWorkout(
+      { ...workout, exercises: exercises, finishedDate: date },
+      () => navigation.goBack()
     );
   };
 
@@ -53,8 +55,16 @@ const ActiveWorkoutScreen: FC<Props> = (props) => {
 
   return (
     <View style={styles.container}>
-      <ExercisesFlatlist exercises={exercises} forActiveWorkout={true} />
-      {button("Finish Workout", () => finishWorkout())}
+      <View style={{ width: "100%" }}>
+        <ExercisesFlatlist
+          exercises={exercises}
+          flatlistFooter={
+            <View style={styles.buttonContainer}>
+              {button("Finish Workout", () => finishWorkout())}
+            </View>
+          }
+        />
+      </View>
     </View>
   );
 };
@@ -66,6 +76,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.primary,
     paddingTop: 10,
+  },
+  buttonContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    paddingTop: 20,
+    marginBottom: 30,
+    width: "90%",
+    alignSelf: "center",
   },
   button: {
     backgroundColor: colors.primaryDark,

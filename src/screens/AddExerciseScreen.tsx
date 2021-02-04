@@ -1,5 +1,11 @@
-import React, { FC, useContext, useEffect } from "react";
-import { FlatList, StyleSheet, View, Text } from "react-native";
+import React, { FC, useContext, useEffect, useState } from "react";
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  Text,
+  ActivityIndicator,
+} from "react-native";
 import colors from "../utils/colors";
 import { AppStackParamList } from "../navigation/appstack";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -22,10 +28,13 @@ type Props = {
 
 const CreateWorkoutRoutineScreen: FC<Props> = (props) => {
   const { navigation, route } = props;
-  const { exercises } = useContext(DBContext);
+  const { exercisesIsLoading, getExercisesFromDB } = useContext(DBContext);
   const dispatch = useDispatch();
+  const [exercises, setExercises] = useState<string[]>([""]);
 
-  useEffect(() => {});
+  useEffect(() => {
+    getExercisesFromDB().then(setExercises);
+  }, []);
 
   const onPressedExercise = (name: string) => {
     const exercises = route.params.exercises;
@@ -39,26 +48,34 @@ const CreateWorkoutRoutineScreen: FC<Props> = (props) => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        style={styles.exercisesList}
-        data={exercises}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <ExercisesListItem
-            name={item}
-            onPress={() => onPressedExercise(item)}
-          />
-        )}
-        ItemSeparatorComponent={() => (
-          <View
-            style={{
-              height: 0.5,
-              width: "100%",
-              backgroundColor: colors.white,
-            }}
-          ></View>
-        )}
-      />
+      {!exercisesIsLoading ? (
+        <FlatList
+          style={styles.exercisesList}
+          data={exercises}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <ExercisesListItem
+              name={item}
+              onPress={() => onPressedExercise(item)}
+            />
+          )}
+          ItemSeparatorComponent={() => (
+            <View
+              style={{
+                height: 0.5,
+                width: "100%",
+                backgroundColor: colors.white,
+              }}
+            ></View>
+          )}
+        />
+      ) : (
+        <View
+          style={{ justifyContent: "center", alignItems: "center", flex: 1 }}
+        >
+          <ActivityIndicator size="large" />
+        </View>
+      )}
     </View>
   );
 };

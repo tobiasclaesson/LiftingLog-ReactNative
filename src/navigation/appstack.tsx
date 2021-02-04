@@ -6,10 +6,11 @@ import {
   AddExerciseScreen,
   ActiveWorkoutScreen,
   HistoryScreen,
+  FinishedWorkoutScreen,
 } from "../screens";
 import { DrawerContent, DrawerIcon } from "../components";
 import colors from "../utils/colors";
-import { Exercise } from "../redux/reducers/workoutsReducer";
+import { Exercise, Workout } from "../redux/reducers/workoutsReducer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Ionicon from "react-native-vector-icons/Ionicons";
@@ -21,6 +22,7 @@ export type AppStackParamList = {
   AddExerciseScreen: { exercises: Exercise[] };
   ActiveWorkoutScreen: { title: string; workoutIndex: number };
   HistoryScreen: undefined;
+  FinishedWorkoutScreen: { workout: Workout };
 };
 
 export type BottomTabParamList = {
@@ -91,12 +93,20 @@ const HistoryStack = () => {
           headerLeft: (props) => <DrawerIcon {...props} />,
         }}
       />
+      <Stack.Screen
+        name="FinishedWorkoutScreen"
+        component={FinishedWorkoutScreen}
+        options={({ route }) => ({
+          title: route.params.workout.title,
+        })}
+      />
     </Stack.Navigator>
   );
 };
 const AppTabNavigator = () => {
   return (
     <Tab.Navigator
+      initialRouteName="Home"
       tabBarOptions={{
         activeTintColor: colors.white,
         // activeBackgroundColor: colors.primaryDark,

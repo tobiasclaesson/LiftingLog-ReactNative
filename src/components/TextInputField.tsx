@@ -6,10 +6,17 @@ interface Props {
   onChangeText: (text: string) => void;
   secureTextEntry?: boolean;
   keyboardType?: "email-address";
+  shouldAutoFocus?: boolean;
 }
 
 const TextInputField: FC<Props> = (props) => {
-  const { placeholder, onChangeText, secureTextEntry, keyboardType } = props;
+  const {
+    placeholder,
+    onChangeText,
+    secureTextEntry,
+    keyboardType,
+    shouldAutoFocus,
+  } = props;
 
   return (
     <View style={styles.container}>
@@ -19,6 +26,9 @@ const TextInputField: FC<Props> = (props) => {
         onChangeText={(text) => onChangeText(text)}
         secureTextEntry={secureTextEntry || false}
         keyboardType={keyboardType || "default"}
+        autoCompleteType="off"
+        autoCorrect={false}
+        autoFocus={shouldAutoFocus || false}
       />
     </View>
   );

@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, FC } from "react";
 import { auth } from "../firebase/firebase";
 import firebase from "firebase";
+import { Alert } from "react-native";
 
 type PropTypes = {
   children?: React.ReactNode;
@@ -35,7 +36,7 @@ const AuthContextProvider: FC = (props: PropTypes) => {
     try {
       await auth.signInWithEmailAndPassword(email, password);
     } catch (error) {
-      console.log("error: ", error);
+      alert(error);
     }
   };
 
@@ -50,8 +51,8 @@ const AuthContextProvider: FC = (props: PropTypes) => {
   const signUp = async (email: string, password: string) => {
     try {
       await auth.createUserWithEmailAndPassword(email, password);
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      alert(error);
     }
   };
 
