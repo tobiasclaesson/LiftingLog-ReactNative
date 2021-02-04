@@ -1,6 +1,5 @@
 import { Reducer } from "redux";
 import * as ActionTypes from "../actions";
-import allReducers from "./index";
 
 export interface WorkoutsState {
   workouts: Array<Workout>;
@@ -14,24 +13,22 @@ export interface Workout {
 
 export interface Exercise {
   name: string;
-  set: number;
-  reps: number[];
-  weight: number[];
+  sets: Set[];
+}
+
+export interface Set {
+  reps: number;
+  weight: number;
 }
 
 const initialState: WorkoutsState = {
   workouts: [],
 };
 
-type Action = {
-  type: string;
-  payload: WorkoutsState;
-};
-
-export const workoutsReducer: Reducer<WorkoutsState, Action> = (
+export const workoutsReducer = (
   state = initialState,
-  action: Action
-) => {
+  action: ActionTypes.UpdateWorkoutAction
+): WorkoutsState => {
   switch (action.type) {
     case ActionTypes.UPDATE_WORKOUTS: {
       return action.payload;

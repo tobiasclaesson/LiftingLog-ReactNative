@@ -4,6 +4,8 @@ import MainScreen from "./mainScreen";
 import SplashScreen from "./SplashScreen";
 import CreateWorkoutRoutineScreen from "./CreateWorkoutRoutineScreen";
 import AddExerciseScreen from "./AddExerciseScreen";
+import ActiveWorkoutScreen from "./ActiveWorkoutScreen";
+import HistoryScreen from "./HistoryScreen";
 
 export {
   SignUpScreen,
@@ -12,4 +14,6 @@ export {
   SplashScreen,
   CreateWorkoutRoutineScreen,
   AddExerciseScreen,
+  ActiveWorkoutScreen,
+  HistoryScreen,
 };

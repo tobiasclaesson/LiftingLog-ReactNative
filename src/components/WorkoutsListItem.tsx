@@ -1,9 +1,8 @@
 import React, { FC } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { color } from "react-native-reanimated";
-import { Workout } from "../reducers/workoutsReducer";
-import * as colors from "../utils/colors";
+import { Workout } from "../redux/reducers/workoutsReducer";
+import colors from "../utils/colors";
 
 interface Props {
   workout: Workout;

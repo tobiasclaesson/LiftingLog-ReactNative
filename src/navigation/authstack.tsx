@@ -1,19 +1,26 @@
 import React, { FC } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SignUpScreen, LoginScreen } from "../screens";
-import * as colors from "../utils/colors";
-import { color } from "react-native-reanimated";
+import colors from "../utils/colors";
 
 export type AuthStackParamList = {
   Login: undefined;
   Signup: undefined;
 };
 
+const screenOptions = {
+  headerTintColor: "#fff",
+  headerStyle: {
+    backgroundColor: colors.primaryDark,
+  },
+  headerBackTitle: "Back",
+};
+
 const { Navigator, Screen } = createStackNavigator<AuthStackParamList>();
 
 const AuthStack: FC = () => {
   return (
-    <Navigator>
+    <Navigator screenOptions={screenOptions}>
       <Screen
         name="Login"
         component={LoginScreen}

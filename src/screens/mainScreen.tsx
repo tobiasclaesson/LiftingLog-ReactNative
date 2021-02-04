@@ -1,11 +1,11 @@
 import React, { FC, useContext, useEffect, useState } from "react";
 import { View, StyleSheet, Button, FlatList } from "react-native";
 import { AuthContext } from "../context/AuthContext";
-import * as colors from "../utils/colors";
-import * as actions from "../actions";
+import colors from "../utils/colors";
+import * as actions from "../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { Workout } from "../reducers/workoutsReducer";
-import { ReducerState } from "../reducers";
+import { Workout } from "../redux/reducers/workoutsReducer";
+import { ReducerState } from "../redux/reducers";
 import { WorkoutsListItem, AddWorkoutRoutineButton } from "../components";
 import { DBContext } from "../context/DBContext";
 import { AppStackParamList } from "../navigation/appstack";
@@ -23,13 +23,10 @@ type Props = {
 const MainScreen: FC<Props> = (props) => {
   const { navigation } = props;
   const { signOut } = useContext(AuthContext);
-  const { saveWorkoutRoutine } = useContext(DBContext);
   const { workouts } = useSelector(
     (state: ReducerState) => state.workoutsReducer
   );
-  const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [workoutRoutines, setWorkoutRoutines] = useState<Workout[]>([]);
 
   useEffect(() => {
@@ -41,15 +38,18 @@ const MainScreen: FC<Props> = (props) => {
       <FlatList
         style={styles.workoutsList}
         data={workoutRoutines}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <WorkoutsListItem
             workout={item}
             onPress={() => {
-              console.log("clicking workout");
+              navigation.navigate("ActiveWorkoutScreen", {
+                title: item.title,
+                workoutIndex: index,
+              });
             }}
           />
         )}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item) => item.key}
         ItemSeparatorComponent={() => (
           <View
             style={{
@@ -60,10 +60,11 @@ const MainScreen: FC<Props> = (props) => {
           ></View>
         )}
       />
-      <AddWorkoutRoutineButton
-        onPress={() => navigation.navigate("CreateWorkoutRoutineScreen")}
-      />
-      <Button title="Log out" onPress={() => signOut()} />
+      <View style={styles.addButtonContainer}>
+        <AddWorkoutRoutineButton
+          onPress={() => navigation.navigate("CreateWorkoutRoutineScreen")}
+        />
+      </View>
     </View>
   );
 };
@@ -78,6 +79,9 @@ const styles = StyleSheet.create({
   workoutsList: {
     width: "100%",
     paddingTop: 15,
+  },
+  addButtonContainer: {
+    width: "100%",
   },
 });
 

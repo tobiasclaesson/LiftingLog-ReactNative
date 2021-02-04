@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { TextInputField } from "../components";
 import { AuthContext } from "../context/AuthContext";
 import { StackNavigationProp } from "@react-navigation/stack";
+import colors from "../utils/colors";
 
 type AuthStackParamList = {
   Login: undefined;
@@ -38,7 +39,6 @@ const App: FC<Props> = (props) => {
 
   return (
     <View style={styles.container}>
-      <Text>Login Screen</Text>
       <TextInputField
         placeholder="Email"
         onChangeText={(text) => setEmail(text)}
@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: colors.primary,
   },
   buttonContainer: {
     flexDirection: "row",
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   button: {
-    backgroundColor: "lightblue",
+    backgroundColor: colors.primaryDark,
     borderRadius: 5,
     marginTop: 15,
     width: "45%",
@@ -87,6 +88,7 @@ const styles = StyleSheet.create({
   buttonText: {
     padding: 15,
     paddingHorizontal: 20,
+    color: colors.white,
   },
 });
 

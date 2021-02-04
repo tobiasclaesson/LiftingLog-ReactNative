@@ -1,35 +1,31 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import colors from "../utils/colors";
 import { AppStackParamList } from "../navigation/appstack";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { ExercisesFlatlist, TextInputField } from "../components";
 import { DBContext } from "../context/DBContext";
-import { Exercise } from "../redux/reducers/workoutsReducer";
+import { RouteProp } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { ReducerState } from "../redux/reducers";
 import * as Actions from "../redux/actions";
 
-type ProfileScreenNavigationProp = StackNavigationProp<
+type ActiveWorkoutScreenNavigationProp = StackNavigationProp<
   AppStackParamList,
-  "CreateWorkoutRoutineScreen"
+  "ActiveWorkoutScreen"
 >;
 
 type Props = {
-  navigation: ProfileScreenNavigationProp;
+  navigation: ActiveWorkoutScreenNavigationProp;
+  route: RouteProp<{ params: { workoutIndex: number } }, "params">;
 };
 
-const CreateWorkoutRoutineScreen: FC<Props> = (props) => {
-  const { navigation } = props;
+const ActiveWorkoutScreen: FC<Props> = (props) => {
+  const { navigation, route } = props;
+  const workouts = useSelector((state: ReducerState) => state.workoutsReducer);
+  const workout = workouts.workouts[route.params.workoutIndex];
+  const { saveFinishedWorkout } = useContext(DBContext);
 
-  const [title, setTitle] = useState<string>("");
   const exercises_ = useSelector(
     (state: ReducerState) => state.exercisesReducer
   );
@@ -37,11 +33,15 @@ const CreateWorkoutRoutineScreen: FC<Props> = (props) => {
 
   const dispatch = useDispatch();
 
-  const { saveWorkoutRoutine } = useContext(DBContext);
-
   useEffect(() => {
-    dispatch(Actions.updateExercises([]));
+    dispatch(Actions.updateExercises(workout.exercises));
   }, []);
+
+  const finishWorkout = () => {
+    saveFinishedWorkout({ ...workout, exercises: exercises }, () =>
+      navigation.goBack()
+    );
+  };
 
   const button = (text: string, onPress: () => void) => {
     return (
@@ -53,18 +53,8 @@ const CreateWorkoutRoutineScreen: FC<Props> = (props) => {
 
   return (
     <View style={styles.container}>
-      <TextInputField placeholder={"Title"} onChangeText={(e) => setTitle(e)} />
-      <ExercisesFlatlist exercises={exercises} />
-      <View style={styles.buttonContainer}>
-        {button("Add Exercise", () =>
-          navigation.navigate("AddExerciseScreen", { exercises })
-        )}
-        {button("Save Routine", () => {
-          let routine = { title: title, exercises: exercises, key: "" };
-          dispatch(Actions.updateExercises([]));
-          saveWorkoutRoutine(routine, () => navigation.goBack());
-        })}
-      </View>
+      <ExercisesFlatlist exercises={exercises} forActiveWorkout={true} />
+      {button("Finish Workout", () => finishWorkout())}
     </View>
   );
 };
@@ -77,20 +67,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     paddingTop: 10,
   },
-  buttonContainer: {
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
-    paddingTop: 20,
-
-    width: "90%",
-  },
   button: {
     backgroundColor: colors.primaryDark,
     justifyContent: "center",
     alignItems: "center",
     minWidth: "40%",
     borderRadius: 5,
+    marginTop: 10,
   },
   buttonText: {
     paddingVertical: 15,
@@ -100,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateWorkoutRoutineScreen;
+export default ActiveWorkoutScreen;

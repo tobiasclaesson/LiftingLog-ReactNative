@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect, FC } from "react";
 import { auth, db } from "../firebase/firebase";
-import { Workout } from "../reducers/workoutsReducer";
+import { Workout } from "../redux/reducers/workoutsReducer";
 import { useDispatch } from "react-redux";
-import * as Actions from "../actions";
+import * as Actions from "../redux/actions";
 import { AddExerciseScreen } from "../screens";
 //import firebase from "firebase";
 
@@ -15,6 +15,7 @@ const initialState = {
   saveWorkoutRoutine: (workout: Workout, closure?: () => void) => {},
   getExercisesFromDB: () => {},
   exercises: [""],
+  saveFinishedWorkout: (workout: Workout, closure?: () => void) => {},
 };
 
 export const DBContext = createContext(initialState);
@@ -38,7 +39,7 @@ const DBContextProvider: FC = (props: PropTypes) => {
           querySnapshot.forEach((documentSnapshot) => {
             workoutRoutines.push({
               title: documentSnapshot.data().title,
-              exercises: [],
+              exercises: documentSnapshot.data().exercises,
               key: documentSnapshot.id,
             });
           });
@@ -88,9 +89,30 @@ const DBContextProvider: FC = (props: PropTypes) => {
     setExercises(exercises);
   };
 
+  const saveFinishedWorkout = async (
+    workout: Workout,
+    closure?: () => void
+  ) => {
+    await db
+      .collection("users")
+      .doc(auth.currentUser!.uid)
+      .collection("finishedWorkouts")
+      .add(workout);
+
+    if (closure) {
+      closure();
+    }
+  };
+
   return (
     <DBContext.Provider
-      value={{ isLoading, saveWorkoutRoutine, getExercisesFromDB, exercises }}
+      value={{
+        isLoading,
+        saveWorkoutRoutine,
+        getExercisesFromDB,
+        exercises,
+        saveFinishedWorkout,
+      }}
     >
       {children}
     </DBContext.Provider>

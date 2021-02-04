@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Workout } from "../reducers/workoutsReducer";
+import { Workout } from "../redux/reducers/workoutsReducer";
 import { TextInputField } from "../components";
-import * as colors from "../utils/colors";
+import colors from "../utils/colors";
 
 interface Props {
   onPress: () => void;
@@ -27,7 +27,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 3,
-    zIndex: 1,
+    alignSelf: "center",
+    marginBottom: 20,
+    width: "90%",
   },
   title: {
     padding: 20,
@@ -35,8 +37,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "Verdana",
     fontSize: 18,
-    zIndex: -1,
-    position: "relative",
   },
 });
 
