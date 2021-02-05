@@ -1,14 +1,23 @@
-import { Exercise, Workout } from "../reducers/workoutsReducer";
+import { Exercise, Workout } from '../reducers/workoutsReducer';
 
 // workouts
-export const UPDATE_WORKOUTS = "UPDATE_WORKOUTS";
+export const UPDATE_WORKOUTS = 'UPDATE_WORKOUTS';
+export const UPDATE_FINISHED_WORKOUTS = 'UPDATE_FINISHED_WORKOUTS';
 
-export type UpdateWorkoutAction = {
+type UpdateWorkoutAction = {
   type: typeof UPDATE_WORKOUTS;
   payload: { workouts: Workout[] };
 };
+type UpdateFinishedWorkoutAction = {
+  type: typeof UPDATE_FINISHED_WORKOUTS;
+  payload: { finishedWorkouts: Workout[] };
+};
 
-export const updateWorkouts = (workouts: Workout[]): UpdateWorkoutAction => {
+export type WorkoutsActionTypes =
+  | UpdateWorkoutAction
+  | UpdateFinishedWorkoutAction;
+
+export const updateWorkouts = (workouts: Workout[]): WorkoutsActionTypes => {
   return {
     type: UPDATE_WORKOUTS,
     payload: {
@@ -16,12 +25,22 @@ export const updateWorkouts = (workouts: Workout[]): UpdateWorkoutAction => {
     },
   };
 };
+export const updateFinishedWorkouts = (
+  finishedWorkouts: Workout[]
+): WorkoutsActionTypes => {
+  return {
+    type: UPDATE_FINISHED_WORKOUTS,
+    payload: {
+      finishedWorkouts: finishedWorkouts,
+    },
+  };
+};
 
 // Exercises
-export const UPDATE_EXERCISES = "UPDATE_EXERCISES";
-export const REMOVE_EXERCISE = "REMOVE_EXERCISE";
-export const ADD_SET = "ADD_SET";
-export const REMOVE_SET = "REMOVE_SET";
+export const UPDATE_EXERCISES = 'UPDATE_EXERCISES';
+export const REMOVE_EXERCISE = 'REMOVE_EXERCISE';
+export const ADD_SET = 'ADD_SET';
+export const REMOVE_SET = 'REMOVE_SET';
 
 interface UpdateExercisesAction {
   type: typeof UPDATE_EXERCISES;

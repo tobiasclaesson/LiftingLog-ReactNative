@@ -1,8 +1,8 @@
-import { Reducer } from "redux";
-import * as ActionTypes from "../actions";
+import * as ActionTypes from '../actions';
 
 export interface WorkoutsState {
   workouts: Array<Workout>;
+  finishedWorkouts: Array<Workout>;
 }
 
 export interface Workout {
@@ -24,15 +24,22 @@ export interface Set {
 
 const initialState: WorkoutsState = {
   workouts: [],
+  finishedWorkouts: [],
 };
 
 export const workoutsReducer = (
   state = initialState,
-  action: ActionTypes.UpdateWorkoutAction
+  action: ActionTypes.WorkoutsActionTypes
 ): WorkoutsState => {
   switch (action.type) {
     case ActionTypes.UPDATE_WORKOUTS: {
-      return action.payload;
+      return { ...state, workouts: action.payload.workouts };
+    }
+    case ActionTypes.UPDATE_FINISHED_WORKOUTS: {
+      return {
+        ...state,
+        finishedWorkouts: action.payload.finishedWorkouts,
+      };
     }
     default:
       return state;

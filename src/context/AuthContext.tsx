@@ -1,7 +1,6 @@
-import React, { createContext, useState, useEffect, FC } from "react";
-import { auth } from "../firebase/firebase";
-import firebase from "firebase";
-import { Alert } from "react-native";
+import React, { createContext, useState, useEffect, FC } from 'react';
+import { auth } from '../firebase/firebase';
+import firebase from 'firebase';
 
 type PropTypes = {
   children?: React.ReactNode;
@@ -44,7 +43,7 @@ const AuthContextProvider: FC = (props: PropTypes) => {
     try {
       await auth.signOut();
     } catch (error) {
-      console.log("error:", error);
+      console.log('error:', error);
     }
   };
 

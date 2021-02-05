@@ -1,8 +1,7 @@
-import React, { FC } from "react";
-import { StyleSheet, Text, View, FlatList, ScrollView } from "react-native";
-import { Exercise } from "../redux/reducers/workoutsReducer";
-import colors from "../utils/colors";
-import ExercisesFlatlistItem from "./ExercisesFlatlistItem";
+import React, { FC } from 'react';
+import { View, FlatList, StyleSheet } from 'react-native';
+import { Exercise } from '../redux/reducers/workoutsReducer';
+import ExercisesFlatlistItem from './ExercisesFlatlistItem';
 
 interface Props {
   exercises: Exercise[];
@@ -22,10 +21,10 @@ const ExercisesFlatlist: FC<Props> = (props) => {
   } = props;
 
   return (
-    <View style={{ width: "100%" }}>
+    <View style={styles.container}>
       <FlatList
         data={exercises}
-        style={{ alignSelf: "center", width: "100%" }}
+        style={styles.list}
         renderItem={({ item, index }) => (
           <ExercisesFlatlistItem
             exercise={item}
@@ -43,9 +42,10 @@ const ExercisesFlatlist: FC<Props> = (props) => {
 };
 
 const styles = StyleSheet.create({
-  listItem: {
-    justifyContent: "center",
-    alignItems: "center",
+  container: { width: '100%' },
+  list: {
+    alignSelf: 'center',
+    width: '100%',
   },
 });
 

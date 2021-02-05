@@ -1,33 +1,25 @@
-import React, { FC, useContext, useEffect, useState } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  View,
-  Text,
-  ActivityIndicator,
-} from "react-native";
-import colors from "../utils/colors";
-import { AppStackParamList } from "../navigation/appstack";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RouteProp } from "@react-navigation/native";
-import { ExercisesFlatlist, ExercisesListItem } from "../components";
-import { DBContext } from "../context/DBContext";
-import { Exercise, Workout } from "../redux/reducers/workoutsReducer";
-import { useDispatch } from "react-redux";
-import * as Actions from "../redux/actions";
+import React, { FC } from 'react';
+import { StyleSheet, View } from 'react-native';
+import colors from '../utils/colors';
+import { AppStackParamList } from '../navigation/appstack';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+import { ExercisesFlatlist } from '../components';
+
+import { Workout } from '../redux/reducers/workoutsReducer';
 
 type FinishedWorkoutScreenNavigationProp = StackNavigationProp<
   AppStackParamList,
-  "FinishedWorkoutScreen"
+  'FinishedWorkoutScreen'
 >;
 
 type Props = {
   navigation: FinishedWorkoutScreenNavigationProp;
-  route: RouteProp<{ params: { workout: Workout } }, "params">;
+  route: RouteProp<{ params: { workout: Workout } }, 'params'>;
 };
 
 const FinishedWorkoutScreen: FC<Props> = (props) => {
-  const { navigation, route } = props;
+  const { route } = props;
 
   return (
     <View style={styles.container}>
@@ -41,14 +33,11 @@ const FinishedWorkoutScreen: FC<Props> = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "flex-start",
-    alignItems: "center",
+    justifyContent: 'flex-start',
+    alignItems: 'center',
     flex: 1,
     backgroundColor: colors.primary,
     paddingVertical: 20,
-  },
-  exercisesList: {
-    width: "100%",
   },
 });
 

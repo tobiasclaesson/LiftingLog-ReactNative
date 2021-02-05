@@ -1,6 +1,6 @@
-import { workoutsReducer } from "./workoutsReducer";
-import { exercisesReducer } from "./exercisesReducer";
-import { combineReducers } from "redux";
+import { workoutsReducer } from './workoutsReducer';
+import { exercisesReducer } from './exercisesReducer';
+import { combineReducers } from 'redux';
 
 const allReducers = combineReducers({
   workoutsReducer,

@@ -1,18 +1,17 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from 'react';
 import {
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-} from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import { ReducerState } from "../redux/reducers";
-import { Set } from "../redux/reducers/workoutsReducer";
-import colors from "../utils/colors";
-import * as Actions from "../redux/actions";
-import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import { color } from "react-native-reanimated";
+} from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { ReducerState } from '../redux/reducers';
+import { Set } from '../redux/reducers/workoutsReducer';
+import colors from '../utils/colors';
+import * as Actions from '../redux/actions';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Props {
   set: Set;
@@ -53,9 +52,9 @@ const SetItem: FC<Props> = (props) => {
         <View style={styles.repsContainer}>
           <TextInput
             style={styles.textInput}
-            keyboardType={"numeric"}
+            keyboardType={'numeric'}
             onChangeText={(text) => updateReps(text)}
-            autoCompleteType="off"
+            autoCompleteType='off'
             autoCorrect={false}
             selectTextOnFocus={true}
           >
@@ -72,9 +71,9 @@ const SetItem: FC<Props> = (props) => {
         <View style={styles.weightContainer}>
           <TextInput
             style={styles.textInput}
-            keyboardType={"numeric"}
+            keyboardType={'numeric'}
             onChangeText={(text) => updateWeight(text)}
-            autoCompleteType="off"
+            autoCompleteType='off'
             autoCorrect={false}
             selectTextOnFocus={true}
           >
@@ -90,31 +89,22 @@ const SetItem: FC<Props> = (props) => {
       <View style={styles.iconContainer}>
         {!forFinishedWorkout ? (
           <TouchableOpacity
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-            }}
+            style={styles.removeButton}
             onPress={() => removeSet()}
           >
             <MaterialCommunityIcon
-              name="delete-forever"
+              name='delete-forever'
               size={30}
               color={colors.red}
-              style={{ alignSelf: "center" }}
             />
           </TouchableOpacity>
         ) : (
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          <View style={styles.removeButton}>
             <MaterialCommunityIcon
-              name="delete-forever"
+              name='delete-forever'
               size={30}
               color={colors.red}
-              style={{ display: "none" }}
+              style={styles.dontDisplay}
             />
           </View>
         )}
@@ -125,47 +115,53 @@ const SetItem: FC<Props> = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
     padding: 10,
   },
   setContainer: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
 
     flex: 1,
   },
   repsContainer: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     flex: 2,
   },
   weightContainer: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     flex: 2,
   },
   iconContainer: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     flex: 1,
   },
-
+  removeButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   text: {
     color: colors.white,
-    fontFamily: "Verdana",
+    fontFamily: 'Verdana',
     fontSize: 14,
     paddingVertical: 10,
     paddingHorizontal: 15,
   },
   textInput: {
-    color: "#fff",
-    fontFamily: "Verdana",
+    color: colors.white,
+    fontFamily: 'Verdana',
     fontSize: 14,
     paddingVertical: 10,
     paddingHorizontal: 15,
     backgroundColor: colors.primary,
+  },
+  dontDisplay: {
+    display: 'none',
   },
 });
 

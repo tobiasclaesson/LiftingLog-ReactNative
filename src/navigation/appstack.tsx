@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import React, { FC } from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 import {
   MainScreen,
   CreateWorkoutRoutineScreen,
@@ -7,14 +7,14 @@ import {
   ActiveWorkoutScreen,
   HistoryScreen,
   FinishedWorkoutScreen,
-} from "../screens";
-import { DrawerContent, DrawerIcon } from "../components";
-import colors from "../utils/colors";
-import { Exercise, Workout } from "../redux/reducers/workoutsReducer";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import Ionicon from "react-native-vector-icons/Ionicons";
-import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
+} from '../screens';
+import { DrawerContent, DrawerIcon } from '../components';
+import colors from '../utils/colors';
+import { Exercise, Workout } from '../redux/reducers/workoutsReducer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import Ionicon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export type AppStackParamList = {
   MainScreen: undefined;
@@ -39,40 +39,40 @@ const Tab = createBottomTabNavigator<BottomTabParamList>();
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
 const screenOptions = {
-  headerTintColor: "#fff",
+  headerTintColor: '#fff',
   headerStyle: {
     backgroundColor: colors.primaryDark,
   },
-  headerBackTitle: "Back",
+  headerBackTitle: 'Back',
 };
 
 const RoutinesStack = () => {
   return (
     <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen
-        name="MainScreen"
+        name='MainScreen'
         component={MainScreen}
         options={{
-          title: "LiftingLog",
+          title: 'LiftingLog',
           headerLeft: (props) => <DrawerIcon {...props} />,
         }}
       />
       <Stack.Screen
-        name="CreateWorkoutRoutineScreen"
+        name='CreateWorkoutRoutineScreen'
         component={CreateWorkoutRoutineScreen}
         options={{
-          title: "Create Routine",
+          title: 'Create Routine',
         }}
       />
       <Stack.Screen
-        name="AddExerciseScreen"
+        name='AddExerciseScreen'
         component={AddExerciseScreen}
         options={{
-          title: "Add Exercise",
+          title: 'Add Exercise',
         }}
       />
       <Stack.Screen
-        name="ActiveWorkoutScreen"
+        name='ActiveWorkoutScreen'
         component={ActiveWorkoutScreen}
         options={({ route }) => ({
           title: route.params.title,
@@ -86,15 +86,15 @@ const HistoryStack = () => {
   return (
     <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen
-        name="HistoryScreen"
+        name='HistoryScreen'
         component={HistoryScreen}
         options={{
-          title: "History",
+          title: 'History',
           headerLeft: (props) => <DrawerIcon {...props} />,
         }}
       />
       <Stack.Screen
-        name="FinishedWorkoutScreen"
+        name='FinishedWorkoutScreen'
         component={FinishedWorkoutScreen}
         options={({ route }) => ({
           title: route.params.workout.title,
@@ -106,7 +106,7 @@ const HistoryStack = () => {
 const AppTabNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName='Home'
       tabBarOptions={{
         activeTintColor: colors.white,
         // activeBackgroundColor: colors.primaryDark,
@@ -121,21 +121,21 @@ const AppTabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="Home"
+        name='Home'
         options={{
-          tabBarLabel: "Home",
+          tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => (
-            <Ionicon name="barbell-outline" size={size} color={color} />
+            <Ionicon name='barbell-outline' size={size} color={color} />
           ),
         }}
         component={RoutinesStack}
       />
       <Tab.Screen
-        name="History"
+        name='History'
         options={{
-          tabBarLabel: "History",
+          tabBarLabel: 'History',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcon name="history" size={size} color={color} />
+            <MaterialCommunityIcon name='history' size={size} color={color} />
           ),
         }}
         component={HistoryStack}
@@ -147,10 +147,10 @@ const AppTabNavigator = () => {
 const AppStack: FC = () => {
   return (
     <Drawer.Navigator
-      drawerPosition="left"
+      drawerPosition='left'
       drawerContent={(props) => <DrawerContent {...props} />}
     >
-      <Drawer.Screen name="AppTabNavigator" component={AppTabNavigator} />
+      <Drawer.Screen name='AppTabNavigator' component={AppTabNavigator} />
     </Drawer.Navigator>
   );
 };

@@ -1,6 +1,6 @@
-import * as ActionTypes from "../actions";
-import { ExercisesActionTypes } from "../actions";
-import { Exercise } from "./workoutsReducer";
+import * as ActionTypes from '../actions';
+import { ExercisesActionTypes } from '../actions';
+import { Exercise } from './workoutsReducer';
 
 export interface ExercisesState {
   exercises: Exercise[];

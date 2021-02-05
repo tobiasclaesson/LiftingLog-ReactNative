@@ -1,23 +1,23 @@
-import React, { FC, useContext, useEffect, useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import colors from "../utils/colors";
-import { AppStackParamList } from "../navigation/appstack";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { ExercisesFlatlist, TextInputField } from "../components";
-import { DBContext } from "../context/DBContext";
-import { RouteProp } from "@react-navigation/native";
-import { useDispatch, useSelector } from "react-redux";
-import { ReducerState } from "../redux/reducers";
-import * as Actions from "../redux/actions";
+import React, { FC, useContext, useEffect } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import colors from '../utils/colors';
+import { AppStackParamList } from '../navigation/appstack';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { ExercisesFlatlist } from '../components';
+import { DBContext } from '../context/DBContext';
+import { RouteProp } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { ReducerState } from '../redux/reducers';
+import * as Actions from '../redux/actions';
 
 type ActiveWorkoutScreenNavigationProp = StackNavigationProp<
   AppStackParamList,
-  "ActiveWorkoutScreen"
+  'ActiveWorkoutScreen'
 >;
 
 type Props = {
   navigation: ActiveWorkoutScreenNavigationProp;
-  route: RouteProp<{ params: { workoutIndex: number } }, "params">;
+  route: RouteProp<{ params: { workoutIndex: number } }, 'params'>;
 };
 
 const ActiveWorkoutScreen: FC<Props> = (props) => {
@@ -38,7 +38,7 @@ const ActiveWorkoutScreen: FC<Props> = (props) => {
   }, []);
 
   const finishWorkout = () => {
-    let date = new Date();
+    const date = new Date();
     saveFinishedWorkout(
       { ...workout, exercises: exercises, finishedDate: date },
       () => navigation.goBack()
@@ -55,42 +55,40 @@ const ActiveWorkoutScreen: FC<Props> = (props) => {
 
   return (
     <View style={styles.container}>
-      <View style={{ width: "100%" }}>
-        <ExercisesFlatlist
-          exercises={exercises}
-          flatlistFooter={
-            <View style={styles.buttonContainer}>
-              {button("Finish Workout", () => finishWorkout())}
-            </View>
-          }
-        />
-      </View>
+      <ExercisesFlatlist
+        exercises={exercises}
+        flatlistFooter={
+          <View style={styles.buttonContainer}>
+            {button('Finish Workout', () => finishWorkout())}
+          </View>
+        }
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "flex-start",
-    alignItems: "center",
+    justifyContent: 'flex-start',
+    alignItems: 'center',
     flex: 1,
     backgroundColor: colors.primary,
     paddingTop: 10,
   },
   buttonContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
     paddingTop: 20,
     marginBottom: 30,
-    width: "90%",
-    alignSelf: "center",
+    width: '90%',
+    alignSelf: 'center',
   },
   button: {
     backgroundColor: colors.primaryDark,
-    justifyContent: "center",
-    alignItems: "center",
-    minWidth: "40%",
+    justifyContent: 'center',
+    alignItems: 'center',
+    minWidth: '40%',
     borderRadius: 5,
     marginTop: 10,
   },
@@ -98,7 +96,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 20,
     color: colors.white,
-    fontFamily: "Verdana",
+    fontFamily: 'Verdana',
   },
 });
 

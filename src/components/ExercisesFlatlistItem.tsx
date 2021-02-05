@@ -1,12 +1,11 @@
-import React, { FC } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { useDispatch, useSelector } from "react-redux";
-import { Exercise } from "../redux/reducers/workoutsReducer";
-import colors from "../utils/colors";
-import SetItem from "./SetItem";
-import * as Actions from "../redux/actions";
-import { ReducerState } from "../redux/reducers";
+import React, { FC } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useDispatch } from 'react-redux';
+import { Exercise } from '../redux/reducers/workoutsReducer';
+import colors from '../utils/colors';
+import SetItem from './SetItem';
+import * as Actions from '../redux/actions';
 
 interface Props {
   exercise: Exercise;
@@ -41,11 +40,7 @@ const ExercisesFlatlistItem: FC<Props> = (props) => {
           style={styles.removeExerciseButton}
           onPress={() => removeExercise()}
         >
-          <Text
-            style={{ ...styles.text, color: colors.red, fontWeight: "bold" }}
-          >
-            X
-          </Text>
+          <Text style={[styles.text, styles.removeExerciseButtonText]}>X</Text>
         </TouchableOpacity>
       );
     }
@@ -60,29 +55,17 @@ const ExercisesFlatlistItem: FC<Props> = (props) => {
       <View style={styles.setsContainer}>
         <View
           style={
-            exercise.sets.length > 0 ? styles.setsHeader : { display: "none" }
+            exercise.sets.length > 0 ? styles.setsHeader : styles.dontDisplay
           }
         >
           <View style={styles.sectionOne}>
-            <Text
-              style={{ minWidth: 30, color: colors.white, textAlign: "center" }}
-            >
-              Set
-            </Text>
+            <Text style={styles.setLabel}>Set</Text>
           </View>
           <View style={styles.sectionTwo}>
-            <Text
-              style={{ minWidth: 30, color: colors.white, textAlign: "center" }}
-            >
-              Reps
-            </Text>
+            <Text style={styles.setLabel}>Reps</Text>
           </View>
           <View style={styles.sectionThree}>
-            <Text
-              style={{ minWidth: 30, color: colors.white, textAlign: "center" }}
-            >
-              Weight
-            </Text>
+            <Text style={styles.setLabel}>Weight</Text>
           </View>
           <View style={styles.sectionFour}></View>
         </View>
@@ -116,19 +99,21 @@ const ExercisesFlatlistItem: FC<Props> = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "90%",
+    width: '90%',
     backgroundColor: colors.primaryDark,
-    alignSelf: "center",
+    alignSelf: 'center',
+    paddingTop: 5,
+    paddingBottom: 15,
   },
   titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   title: {
     padding: 15,
-    color: "#fff",
-    fontFamily: "Verdana",
+    color: colors.white,
+    fontFamily: 'Verdana',
     fontSize: 16,
   },
   removeExerciseButton: {},
@@ -139,25 +124,25 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 5,
     padding: 10,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   addSetButtonText: {
-    color: "#fff",
-    fontFamily: "Verdana",
+    color: colors.white,
+    fontFamily: 'Verdana',
     fontSize: 14,
   },
   text: {
     color: colors.white,
-    fontFamily: "Verdana",
+    fontFamily: 'Verdana',
     fontSize: 14,
     paddingVertical: 10,
     paddingHorizontal: 15,
   },
   setsHeader: {
     paddingHorizontal: 10,
-    flexDirection: "row",
-    justifyContent: "flex-start",
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
   },
   sectionOne: {
     flex: 1,
@@ -170,6 +155,18 @@ const styles = StyleSheet.create({
   },
   sectionFour: {
     flex: 1,
+  },
+  setLabel: {
+    minWidth: 30,
+    color: colors.white,
+    textAlign: 'center',
+  },
+  dontDisplay: {
+    display: 'none',
+  },
+  removeExerciseButtonText: {
+    color: colors.red,
+    fontWeight: 'bold',
   },
 });
 

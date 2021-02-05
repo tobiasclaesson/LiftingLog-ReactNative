@@ -1,7 +1,7 @@
-import React, { FC } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import colors from "../utils/colors";
+import React, { FC } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import colors from '../utils/colors';
 
 interface Props {
   name: string;
@@ -26,15 +26,15 @@ const ExercisesListItem: FC<Props> = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    width: '100%',
     backgroundColor: colors.primaryDark,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
 
   title: {
     padding: 25,
-    color: "#fff",
-    fontFamily: "Verdana",
+    color: colors.white,
+    fontFamily: 'Verdana',
     fontSize: 18,
   },
 });

@@ -1,10 +1,7 @@
-import React, { FC } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Workout } from "../redux/reducers/workoutsReducer";
-import { TextInputField } from "../components";
-import colors from "../utils/colors";
-import { color } from "react-native-reanimated";
+import React, { FC } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import colors from '../utils/colors';
 
 interface Props {
   onPress: () => void;
@@ -25,20 +22,20 @@ const AddWorkoutRoutineButton: FC<Props> = (props) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.primaryDark,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 3,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginBottom: 20,
-    width: "90%",
+    width: '90%',
     borderColor: colors.primaryLight,
     borderWidth: 2,
   },
   title: {
     padding: 20,
 
-    color: "#fff",
-    fontFamily: "Verdana",
+    color: colors.white,
+    fontFamily: 'Verdana',
     fontSize: 18,
   },
 });
