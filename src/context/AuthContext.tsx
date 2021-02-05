@@ -1,6 +1,6 @@
-import React, { createContext, useState, useEffect, FC } from "react";
-import { auth } from "../firebase/firebase";
-import firebase from "firebase";
+import React, { createContext, useState, useEffect, FC } from 'react';
+import { auth } from '../firebase/firebase';
+import firebase from 'firebase';
 
 type PropTypes = {
   children?: React.ReactNode;
@@ -25,18 +25,17 @@ const AuthContextProvider: FC = (props: PropTypes) => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
+      setIsLoading(false);
     });
 
     return unsubscribe;
   });
 
   const signIn = async (email: string, password: string) => {
-    console.log("calling log in ");
     try {
       await auth.signInWithEmailAndPassword(email, password);
-      console.log("logIn ");
     } catch (error) {
-      console.log("error: ", error);
+      alert(error);
     }
   };
 
@@ -44,16 +43,15 @@ const AuthContextProvider: FC = (props: PropTypes) => {
     try {
       await auth.signOut();
     } catch (error) {
-      console.log("error:", error);
+      console.log('error:', error);
     }
   };
 
   const signUp = async (email: string, password: string) => {
     try {
       await auth.createUserWithEmailAndPassword(email, password);
-      alert("Authing up baby");
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      alert(error);
     }
   };
 

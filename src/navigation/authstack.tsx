@@ -1,27 +1,34 @@
-import React, { FC } from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import { SignUpScreen, LoginScreen } from "../screens";
-import * as colors from "../utils/colors";
-import { color } from "react-native-reanimated";
+import React, { FC } from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import { SignUpScreen, LoginScreen } from '../screens';
+import colors from '../utils/colors';
 
-type AuthStackParamList = {
+export type AuthStackParamList = {
   Login: undefined;
   Signup: undefined;
+};
+
+const screenOptions = {
+  headerTintColor: '#fff',
+  headerStyle: {
+    backgroundColor: colors.primaryDark,
+  },
+  headerBackTitle: 'Back',
 };
 
 const { Navigator, Screen } = createStackNavigator<AuthStackParamList>();
 
 const AuthStack: FC = () => {
   return (
-    <Navigator>
+    <Navigator screenOptions={screenOptions}>
       <Screen
-        name="Login"
+        name='Login'
         component={LoginScreen}
         initialParams={undefined}
         options={{
-          title: "LiftingLog",
+          title: 'LiftingLog',
           headerTitleStyle: {
-            color: "#fff",
+            color: '#fff',
           },
           headerStyle: {
             backgroundColor: colors.primary,
@@ -29,13 +36,13 @@ const AuthStack: FC = () => {
         }}
       />
       <Screen
-        name="Signup"
+        name='Signup'
         component={SignUpScreen}
         initialParams={undefined}
         options={{
-          title: "LiftingLog",
+          title: 'LiftingLog',
           headerTitleStyle: {
-            color: "#fff",
+            color: '#fff',
           },
           headerStyle: {
             backgroundColor: colors.primary,

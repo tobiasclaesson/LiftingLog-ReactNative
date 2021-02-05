@@ -1,14 +1,23 @@
-import React, { FC } from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import React, { FC } from 'react';
+import { StyleSheet, TextInput, View } from 'react-native';
+import colors from '../utils/colors';
 
 interface Props {
   placeholder: string;
   onChangeText: (text: string) => void;
   secureTextEntry?: boolean;
+  keyboardType?: 'email-address';
+  shouldAutoFocus?: boolean;
 }
 
 const TextInputField: FC<Props> = (props) => {
-  const { placeholder, onChangeText, secureTextEntry } = props;
+  const {
+    placeholder,
+    onChangeText,
+    secureTextEntry,
+    keyboardType,
+    shouldAutoFocus,
+  } = props;
 
   return (
     <View style={styles.container}>
@@ -17,6 +26,10 @@ const TextInputField: FC<Props> = (props) => {
         placeholder={placeholder}
         onChangeText={(text) => onChangeText(text)}
         secureTextEntry={secureTextEntry || false}
+        keyboardType={keyboardType || 'default'}
+        autoCompleteType='off'
+        autoCorrect={false}
+        autoFocus={shouldAutoFocus || false}
       />
     </View>
   );
@@ -24,9 +37,9 @@ const TextInputField: FC<Props> = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "90%",
-    alignSelf: "center",
-    backgroundColor: "#e3e3e3",
+    width: '90%',
+    alignSelf: 'center',
+    backgroundColor: colors.textInputBackground,
     borderRadius: 5,
     marginVertical: 5,
   },

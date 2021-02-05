@@ -1,14 +1,9 @@
-import React, { FC, useState, useContext } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
-import { TextInputField } from "../components";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { AuthContext } from "../context/AuthContext";
+import React, { FC, useState, useContext } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { TextInputField } from '../components';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { AuthContext } from '../context/AuthContext';
+import colors from '../utils/colors';
 
 type AuthStackParamList = {
   Login: undefined;
@@ -17,7 +12,7 @@ type AuthStackParamList = {
 
 type ProfileScreenNavigationProp = StackNavigationProp<
   AuthStackParamList,
-  "Signup"
+  'Signup'
 >;
 
 type Props = {
@@ -25,9 +20,8 @@ type Props = {
 };
 
 const App: FC<Props> = (props) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const { signUp } = useContext(AuthContext);
 
   const button = (title: string, onPress: () => void): React.ReactNode => {
@@ -45,25 +39,20 @@ const App: FC<Props> = (props) => {
 
   return (
     <View style={styles.container}>
-      <Text>Sign up Screen</Text>
       <TextInputField
-        placeholder="Name"
-        onChangeText={(text) => setName(text)}
-      />
-      <TextInputField
-        placeholder="Email"
+        placeholder='Email'
         onChangeText={(text) => setEmail(text)}
       />
       <TextInputField
-        placeholder="Password"
+        placeholder='Password'
         onChangeText={(text) => setPassword(text)}
         secureTextEntry={true}
       />
       <View style={styles.buttonContainer}>
-        {button("Cancel", () => {
-          props.navigation.navigate("Login");
+        {button('Cancel', () => {
+          props.navigation.navigate('Login');
         })}
-        {button("Sign in", () => {
+        {button('Sign in', () => {
           signUp(email, password);
         })}
       </View>
@@ -74,25 +63,27 @@ const App: FC<Props> = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.primary,
   },
   buttonContainer: {
-    flexDirection: "row",
-    width: "90%",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    width: '90%',
+    justifyContent: 'space-between',
   },
   button: {
-    backgroundColor: "lightblue",
+    backgroundColor: colors.primaryDark,
     borderRadius: 5,
     marginTop: 15,
-    width: "45%",
-    alignItems: "center",
-    justifyContent: "center",
+    width: '45%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
     padding: 15,
     paddingHorizontal: 20,
+    color: colors.white,
   },
 });
 
